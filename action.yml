@@ -1,0 +1,34 @@
+name: 'install python dependencies'
+description: 'installs app depencencies'
+inputs:
+  python-version:
+    description: 'Python version to use'
+    required: false
+    type: string
+    default: "3.x"
+runs:
+  using: "composite"
+  steps:
+    - name: check package manager
+      id: package_manager_detection
+      shell: bash
+      run: |
+        if [ -f "pyproject.toml" ] && [ -f "poetry.lock" ]; then
+          echo "{install_method}={poetry}" >> "$GITHUB_OUTPUT"
+        elif [ -f "requirements.txt" ]; then
+          echo "{install_method}={pip}" >> "$GITHUB_OUTPUT"
+        else
+          echo "No recognized dependency manager found, aborting"
+          exit 1
+        fi
+    - name: install packages
+      id: install_packages
+      shell: bash
+      run: |
+        if [ "${{ steps.package_manager_detection.outputs.install_method }}" == "poetry" ]; then
+          pipx install poetry
+          poetry install
+        elif [ "${{ steps.package_manager_detection.outputs.install_method }}" == "pip" ]; then
+          pip install -r requirements.txt
+        fi
+
