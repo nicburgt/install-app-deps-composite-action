@@ -6,6 +6,10 @@ inputs:
     required: false
     type: string
     default: "3.x"
+outputs:
+  install_method:
+    description: 'The method used to install dependencies'
+    value: ${{ steps.package_manager_detection.outputs.install_method }}
 runs:
   using: "composite"
   steps:
