@@ -12,9 +12,9 @@ runs:
       shell: bash
       run: |
         if [ -f "pyproject.toml" ] && [ -f "poetry.lock" ]; then
-          echo "{install_method}={poetry}" >> $GITHUB_OUTPUT
+          echo "install_method=poetry" >> $GITHUB_OUTPUT
         elif [ -f "requirements.txt" ]; then
-          echo "{install_method}={pip}" >> "$GITHUB_OUTPUT"
+          echo "install_method=pip" >> $GITHUB_OUTPUT
         else
           echo "No recognized dependency manager found, aborting"
           exit 1
