@@ -1,11 +1,5 @@
 name: 'install python dependencies'
 description: 'installs app depencencies'
-inputs:
-  python-version:
-    description: 'Python version to use'
-    required: false
-    type: string
-    default: "3.x"
 outputs:
   install_method:
     description: 'The method used to install dependencies'
@@ -18,7 +12,7 @@ runs:
       shell: bash
       run: |
         if [ -f "pyproject.toml" ] && [ -f "poetry.lock" ]; then
-          echo "{install_method}={poetry}" >> "$GITHUB_OUTPUT"
+          echo "{install_method}={poetry}" >> $GITHUB_OUTPUT
         elif [ -f "requirements.txt" ]; then
           echo "{install_method}={pip}" >> "$GITHUB_OUTPUT"
         else
